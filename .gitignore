@@ -1,2 +1,20 @@
 
 .DS_Store
+
+.gradle/7.3.3/checksums/
+
+*.lock
+
+build/tmp/compileJava/previous-compilation-data.bin
+
+*.dylib
+
+*.bin
+
+*.properties
+
+*.probe
+
+*.MF
+
+gradle/wrapper/

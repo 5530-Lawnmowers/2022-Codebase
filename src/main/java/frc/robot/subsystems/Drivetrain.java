@@ -7,31 +7,25 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.util.Units;
+//import edu.wpi.first.wpilibj.util.Units;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-import com.ctre.phoenix.*;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.sensors.PigeonIMU;
-
-import frc.robot.commands.CurvatureDriveNew;
-import org.opencv.core.RotatedRect;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.SerialPort;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.CurvatureDriveNew;
+
+//import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+//import edu.wpi.first.wpilibj.geometry.Pose2d;
+//import edu.wpi.first.wpilibj.geometry.Rotation2d;
 //import frc.robot.helpers.ShuffleboardHelpers;
-import com.ctre.phoenix.motorcontrol.can.*;
-import com.kauailabs.navx.frc.AHRS;
+//import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain extends SubsystemBase {
     //Drive test
@@ -152,13 +146,13 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private double getThrottle() {
-        double n = RobotContainer.XBController1.getTriggerAxis(GenericHID.Hand.kRight) -
-                RobotContainer.XBController1.getTriggerAxis(GenericHID.Hand.kLeft);
+        double n = RobotContainer.XBController1.getRightTriggerAxis() -
+                RobotContainer.XBController1.getLeftTriggerAxis();
         return Math.abs(n) < 0.1 ? 0 : n;
     }
 
     private double getTurn() {
-        double n = RobotContainer.XBController1.getX(GenericHID.Hand.kLeft);
+        double n = RobotContainer.XBController1.getLeftX();
         return Math.abs(n) < 0.1 ? 0 : n;
     }
 

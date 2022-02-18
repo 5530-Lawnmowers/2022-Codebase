@@ -7,12 +7,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.*;
-import frc.robot.RobotContainer;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.Drivetrain;
 
 public class CurvatureDriveNew extends CommandBase {
   private final double quickstopAlpha = 0.1;
@@ -41,8 +39,8 @@ public class CurvatureDriveNew extends CommandBase {
   @Override
   public void initialize() {
     // Set initial trigger values
-    oldTriggerL = deadband(RobotContainer.XBController1.getTriggerAxis(Hand.kLeft), kDeadbandTrigger);
-    oldTriggerR = deadband(RobotContainer.XBController1.getTriggerAxis(Hand.kRight), kDeadbandTrigger);
+    oldTriggerL = deadband(RobotContainer.XBController1.getLeftTriggerAxis(), kDeadbandTrigger);
+    oldTriggerR = deadband(RobotContainer.XBController1.getRightTriggerAxis(), kDeadbandTrigger);
 
     // Drivetrain to coast
     drivetrain.setBrakeMode(true);
@@ -53,22 +51,22 @@ public class CurvatureDriveNew extends CommandBase {
   public void execute() {
 
     // Get preliminary current triggers
-    double accelerator = deadband(RobotContainer.XBController1.getTriggerAxis(Hand.kRight), kDeadbandTrigger);
-    double decelerator = deadband(RobotContainer.XBController1.getTriggerAxis(Hand.kLeft), kDeadbandTrigger);
+    double accelerator = deadband(RobotContainer.XBController1.getRightTriggerAxis(), kDeadbandTrigger);
+    double decelerator = deadband(RobotContainer.XBController1.getLeftTriggerAxis(), kDeadbandTrigger);
 
     // Ramp up input values as needed
     if (Math.abs(accelerator - oldTriggerR) > 0.2) {
-      accelerator = ramp(accelerator, Hand.kRight);
+      accelerator = ramp(accelerator, "right");
     }
 
     if (Math.abs(decelerator - oldTriggerL) > 0.2) {
-      decelerator = ramp(decelerator, Hand.kLeft);
+      decelerator = ramp(decelerator, "left");
     }
 
     // Define necessary inputs
     double throttle = accelerator - decelerator;
-    double curve = deadband(RobotContainer.XBController1.getX(Hand.kLeft), kDeadbandJoystick);
-    double quickTurn = deadband(RobotContainer.XBController1.getX(Hand.kRight), kDeadbandJoystick) * turnWeight;
+    double curve = deadband(RobotContainer.XBController1.getLeftX(), kDeadbandJoystick);
+    double quickTurn = deadband(RobotContainer.XBController1.getRightX(), kDeadbandJoystick) * turnWeight;
 
     if (Math.abs(throttle) < quickstopThreshold) {
       // quickstopAccumulator to account for inertia
@@ -167,16 +165,16 @@ public class CurvatureDriveNew extends CommandBase {
 
   /**
    * Ramps up trigger input based on previously stored value
-   * 
+   *
    * @param newTrigger the new input value
    * @param hand       the side input is from
    * @return the ramped input value
    */
-  public double ramp(double newTrigger, Hand hand) {
-    if (hand.equals(Hand.kLeft)) {
+  public double ramp(double newTrigger, String hand) {
+    if (hand.equals("left")) {
       oldTriggerL = 0.09516 * newTrigger + 0.9048 * oldTriggerL;
       return oldTriggerL;
-    } else if (hand.equals(Hand.kRight)) {
+    } else if (hand.equals("right")) {
       oldTriggerR = 0.09516 * newTrigger + 0.9048 * oldTriggerR;
       return oldTriggerR;
     } else {

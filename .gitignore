@@ -18,3 +18,20 @@ build/tmp/compileJava/previous-compilation-data.bin
 *.MF
 
 gradle/wrapper/
+
+.idea/misc.xml
+
+.idea/gradle.xml
+
+.idea/jarRepositories.xml
+
+.idea/vcs.xml
+
+build/
+
+*.log
+
+.idea/compiler.xml
+
+.idea/discord.xml
+

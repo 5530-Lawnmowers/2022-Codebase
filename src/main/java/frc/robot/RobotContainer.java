@@ -19,6 +19,7 @@ import frc.robot.subsystems.ExampleSubsystem;
  */
 public class RobotContainer {
   public static XboxController XBController1 = new XboxController(0);
+  public static XboxController XBController2 = new XboxController(1);
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Drivetrain drivetrain = new Drivetrain();

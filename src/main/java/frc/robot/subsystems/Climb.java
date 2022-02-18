@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.OperatorClimb;
 
 public class Climb extends SubsystemBase {
   private CANSparkMax ClimbL = new CANSparkMax(Constants.ClimbL, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -20,6 +21,7 @@ public class Climb extends SubsystemBase {
     ClimbL.follow(ClimbR);
     ClimbL.setIdleMode(CANSparkMax.IdleMode.kBrake);
     ClimbR.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    setDefaultCommand(new OperatorClimb(this));
   }
 
 

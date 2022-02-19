@@ -50,6 +50,7 @@ public class CurvatureDriveNew extends CommandBase {
   @Override
   public void execute() {
 
+
     // Get preliminary current triggers
     double accelerator = deadband(RobotContainer.XBController1.getRightTriggerAxis(), kDeadbandTrigger);
     double decelerator = deadband(RobotContainer.XBController1.getLeftTriggerAxis(), kDeadbandTrigger);
@@ -116,6 +117,7 @@ public class CurvatureDriveNew extends CommandBase {
     }
 
     // Feed to motors
+    System.out.println(leftPower);
     drivetrain.setDrivetrainMotor(driveWeight * leftPower, Constants.DT_L1);
     drivetrain.setDrivetrainMotor(driveWeight * leftPower, Constants.DT_L2);
     drivetrain.setDrivetrainMotor(-driveWeight * rightPower, Constants.DT_R1);

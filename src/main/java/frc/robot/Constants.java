@@ -14,14 +14,25 @@ package frc.robot;
  */
 public final class Constants {
 
-
+    //Drivetrain motors
     public static final int DT_L1 = 5;
     public static final int DT_L2 = 6;
     public static final int DT_R1 = 7;
     public static final int DT_R2 = 8;
+
+    //shooter motors
     public static final int ShootTop = 10;
     public static final int ShootBot = 9;
+
+    //climb motors
     public static final int ClimbL = 2;
     public static final int ClimbR = 3;
+
+    //Drivetrain Constants
+    public static final double kS = .7023;
+    public static final double kV = 0.26789;
+    public static final double kA = 0.05077;
+    public static final double kP = 0.39476;
+
 
 }

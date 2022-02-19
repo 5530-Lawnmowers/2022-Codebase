@@ -7,12 +7,13 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.commands.ShooterTesting;
 import frc.robot.helpers.ShuffleboardHelpers;
 
 public class Shooter extends SubsystemBase {
-  private CANSparkMax Bot = new CANSparkMax(9, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private CANSparkMax Top = new CANSparkMax(10, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private CANSparkMax Bot = new CANSparkMax(Constants.ShootBot, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private CANSparkMax Top = new CANSparkMax(Constants.ShootTop, CANSparkMaxLowLevel.MotorType.kBrushless);
 
   /**
    * Creates a new Shooter.

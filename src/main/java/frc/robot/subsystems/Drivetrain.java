@@ -13,7 +13,12 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,10 +30,12 @@ import frc.robot.commands.CurvatureDriveNew;
 //import edu.wpi.first.wpilibj.geometry.Pose2d;
 //import edu.wpi.first.wpilibj.geometry.Rotation2d;
 //import frc.robot.helpers.ShuffleboardHelpers;
-//import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain extends SubsystemBase {
+    private final DifferentialDriveOdometry m_odometry;
     //Drive test
+    private AHRS gyro = new AHRS(SerialPort.Port.kMXP);
+
     private final float TickPerRev = 0;
     private final double driveMultiplier = 0.9;
     private final float WheelRadius = 0;
@@ -96,15 +103,21 @@ public class Drivetrain extends SubsystemBase {
 
         // gyro.zeroYaw();
         //setDefaultCommand(new ThrottleMotorTest(this)); //Use this for motor tests
+        m_odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
+
         setDefaultCommand(new CurvatureDriveNew(this));
     }
 
     @Override
     public void periodic() {
+        m_odometry.update(
+
+                gyro.getRotation2d(), getLeftMeters(), getRightMeters());
+
         // This method will be called once per scheduler run
-       // ShuffleboardHelpers.setWidgetValue("Drivetrain", "Left Encoder", drivetrainLeft1.getSelectedSensorPosition());
+        // ShuffleboardHelpers.setWidgetValue("Drivetrain", "Left Encoder", drivetrainLeft1.getSelectedSensorPosition());
         //
-      //  ShuffleboardHelpers.setWidgetValue("Drivetrain", "Right Encoder", drivetrainRight1.getSelectedSensorPosition());
+        //  ShuffleboardHelpers.setWidgetValue("Drivetrain", "Right Encoder", drivetrainRight1.getSelectedSensorPosition());
     }
 
     /**
@@ -233,14 +246,8 @@ public class Drivetrain extends SubsystemBase {
         DDO.update(new Rotation2d(Units.degreesToRadians(getModPigeonYaw())), Units.inchesToMeters(getDistanceLeft()), Units.inchesToMeters(getDistanceRight()));
     }
 
-    public Pose2d getPose() {
-        updatePose();
-        return DDO.getPoseMeters();
-    }
 
-    public void initPose(double start) {
-        StartingPose = start;
-    }
+
 */
     /**
      * Stops all drivetrain motors
@@ -259,4 +266,66 @@ public class Drivetrain extends SubsystemBase {
     // public int getRightEncoder() {
     //     return (int)drivetrainRight1.getSelectedSensorPosition();
     // }
+    public Pose2d getPose() {
+        return m_odometry.getPoseMeters();
+    }
+
+    public double getLeftMeters() {
+        double encoderPos = drivetrainLeft1.getSelectedSensorPosition();
+        double rotations = encoderPos / 2048; //2048 ticks per rotation
+        double outPutRotations = rotations * (40 / 52);// geared to 40:52
+        double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
+        return meters;
+    }
+
+    public double getRightMeters() {
+        double encoderPos = drivetrainRight1.getSelectedSensorPosition();
+        double rotations = encoderPos / 2048; //2048 ticks per rotation
+        double outPutRotations = rotations * (40 / 52);// geared to 40:52
+        double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
+        return meters;
+    }
+
+    public double getLeftVelocity() {
+        double encoderVel = drivetrainLeft1.getSelectedSensorVelocity();
+        double rotations = encoderVel / 2048; //2048 ticks per rotation
+        double outPutRotations = rotations * (40 / 52);// geared to 40:52
+        double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
+        return meters;
+    }
+
+    public double getRightVelocity() {
+        double encoderVel = drivetrainRight1.getSelectedSensorVelocity();
+        double rotations = encoderVel / 2048; //2048 ticks per rotation
+        double outPutRotations = rotations * (40 / 52);// geared to 40:52
+        double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
+        return meters;
+    }
+
+    public void resetEncoders() {
+        gyro.reset();
+//        gyro.resetDistplacement();
+        gyro.zeroYaw();
+        drivetrainLeft1.setSelectedSensorPosition(0);
+        drivetrainRight1.setSelectedSensorPosition(0);
+    }
+
+    public double getHeading() {
+        return gyro.getYaw();
+    }
+
+    public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
+    }
+
+    public void tankDriveVolts(double leftVolts, double rightVolts) {
+        drivetrainLeft1.setVoltage(leftVolts);
+        drivetrainRight1.setVoltage(rightVolts);
+    }
+
+    public void resetOdometry(Pose2d pose) {
+        resetEncoders();
+        m_odometry.resetPosition(pose, gyro.getRotation2d());
+    }
+
 }

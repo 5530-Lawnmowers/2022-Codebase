@@ -4,34 +4,28 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
-public class Intake extends CommandBase {
-    /**
-     * Creates a new Intake.
-     */
-    public Intake() {
-        // Use addRequirements() here to declare subsystem dependencies.
-    }
+public class Intake extends SubsystemBase {
+  private CANSparkMax Intake = new CANSparkMax(Constants.Intake, CANSparkMaxLowLevel.MotorType.kBrushed);
 
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
-    }
+  /**
+   * Creates a new Intake.
+   */
+  public Intake() {
+    Intake.setIdleMode(CANSparkMax.IdleMode.kCoast);
 
-    // Called every time the scheduler runs while the command is scheduled.
-    @Override
-    public void execute() {
-    }
+  }
 
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted) {
-    }
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
 
-    // Returns true when the command should end.
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
+  public void setRawPower(double power) {
+    Intake.set(power);
+  }
 }

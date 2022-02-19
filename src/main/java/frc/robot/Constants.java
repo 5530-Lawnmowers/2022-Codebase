@@ -22,6 +22,9 @@ public final class Constants {
     public static final int DT_R1 = 7;
     public static final int DT_R2 = 8;
 
+    //Intake Motors
+    public static final int Intake = 11;
+
     //shooter motors
     public static final int ShootTop = 10;
     public static final int ShootBot = 9;

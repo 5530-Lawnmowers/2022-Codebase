@@ -27,3 +27,6 @@ build/tmp/compileJava/previous-compilation-data.bin
 *.MF
 
 gradle/wrapper/
+
+build/
+

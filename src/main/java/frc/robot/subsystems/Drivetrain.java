@@ -72,11 +72,11 @@ public class Drivetrain extends SubsystemBase {
         drivetrainLeft2.setNeutralMode(NeutralMode.Coast);
         drivetrainRight1.setNeutralMode(NeutralMode.Coast);
         drivetrainRight2.setNeutralMode(NeutralMode.Coast);
-
         drivetrainLeft1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
         drivetrainRight1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
         drivetrainLeft1.setSelectedSensorPosition(0);
         drivetrainRight1.setSelectedSensorPosition(0);
+
         drivetrainRight1.config_kF(0, .05, 10);
         drivetrainRight1.config_kP(0, .01, 10);
         drivetrainRight1.config_kI(0, .007, 10);
@@ -202,53 +202,7 @@ public class Drivetrain extends SubsystemBase {
         return meters;
     }
 
-    // public double getDistanceLeft() {
-    //     leftDistance = (float) (drivetrainLeft1.getSelectedSensorPosition());
-    //     leftDistance = leftDistance / TickPerRev;
-    //     leftDistance = leftDistance * WheelCircumference;
-    //     return leftDistance;
-    // }
 
-    // public double getDistanceRight() {
-    //     rightDistance = (float) (drivetrainRight1.getSelectedSensorPosition());
-    //     rightDistance = rightDistance / TickPerRev;
-    //     rightDistance = rightDistance * WheelCircumference;
-    //     return leftDistance;
-    // }
-/*
-    public void resetSensors() {
-        DDO.resetPosition(new Pose2d(), new Rotation2d());
-        drivetrainLeft1.setSelectedSensorPosition(0);
-        drivetrainRight1.setSelectedSensorPosition(0);
-    }
-
-    public static double getPigeonCompassHeading() {
-        if (getPigeonYaw() < 0) {
-            return 360 - (getPigeonYaw() % 360.0 + 360.0);
-        }
-        return 360 - (getPigeonYaw() % 360.0);
-    }
-
-    public static double getPigeonYaw() {
-        double[] output = new double[3];
-        pigeon.getYawPitchRoll(output);
-        return output[0];
-    }
-
-    public static double getModPigeonYaw() {
-        if (getPigeonCompassHeading() - StartingPose < 0) {
-            return getPigeonCompassHeading() - StartingPose + 360;
-        }
-        return getPigeonCompassHeading() - StartingPose;
-    }
-
-    public void updatePose() {
-        DDO.update(new Rotation2d(Units.degreesToRadians(getModPigeonYaw())), Units.inchesToMeters(getDistanceLeft()), Units.inchesToMeters(getDistanceRight()));
-    }
-
-
-
-*/
     /**
      * Stops all drivetrain motors
      */

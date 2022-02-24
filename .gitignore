@@ -37,3 +37,8 @@ build/
 
 /build/
 /bin/
+.idea/modules.xml
+gradlew
+.idea/2022-Codebase.iml
+gradlew
+gradlew

@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.helpers.ShuffleboardHelpers;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,6 +26,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    ShuffleboardHelpers.createSimpleWidget("Drivetrain", "Left Position",0);
+    ShuffleboardHelpers.createSimpleWidget("Drivetrain", "Right Position",0);
+    ShuffleboardHelpers.createSimpleWidget("Drivetrain", "Left Velocity",0);
+    ShuffleboardHelpers.createSimpleWidget("Drivetrain", "Right Velocity",0);
+    ShuffleboardHelpers.createSimpleWidget("Drivetrain", "Heading",0);
+    ShuffleboardHelpers.createSimpleWidget("Drivetrain", "Displacement X",0);
+    ShuffleboardHelpers.createSimpleWidget("Drivetrain", "Displacement Y",0);
+
+
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();

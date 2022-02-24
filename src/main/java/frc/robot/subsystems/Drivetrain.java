@@ -12,6 +12,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.CurvatureDriveNew;
+import frc.robot.helpers.ShuffleboardHelpers;
 
 //import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 //import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -63,6 +65,21 @@ public class Drivetrain extends SubsystemBase {
      * Creates a new Drivetrain.
      */
     public Drivetrain() {
+
+        drivetrainLeft1.configFactoryDefault();
+        drivetrainRight1.configFactoryDefault();
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        drivetrainLeft1.configAllSettings(config);
+        drivetrainLeft2.configAllSettings(config);
+        drivetrainRight1.configAllSettings(config);
+        drivetrainRight2.configAllSettings(config);
+        drivetrainLeft1.enableVoltageCompensation(false);
+        drivetrainRight1.enableVoltageCompensation(false);
+        drivetrainLeft2.enableVoltageCompensation(false);
+        drivetrainRight2.enableVoltageCompensation(false);
+
+
         drivetrainLeft1.setInverted(false);
         drivetrainLeft2.setInverted(false);
         drivetrainRight1.setInverted(false);
@@ -72,8 +89,11 @@ public class Drivetrain extends SubsystemBase {
         drivetrainLeft2.setNeutralMode(NeutralMode.Coast);
         drivetrainRight1.setNeutralMode(NeutralMode.Coast);
         drivetrainRight2.setNeutralMode(NeutralMode.Coast);
-        drivetrainLeft1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
-        drivetrainRight1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
+        drivetrainLeft1.selectProfileSlot(0,0);
+        drivetrainRight1.selectProfileSlot(0,0);
+
+//        drivetrainLeft1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
+//        drivetrainRight1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
         drivetrainLeft1.setSelectedSensorPosition(0);
         drivetrainRight1.setSelectedSensorPosition(0);
 
@@ -110,6 +130,18 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+//        System.out.println(drivetrainLeft1.getSelectedSensorPosition());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Left Position",getLeftMeters());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Right Position",getRightMeters());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Left Velocity",getLeftVelocity());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Right Velocity",getRightVelocity());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Heading",getPose().getRotation().getDegrees());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Displacement X",getPose().getTranslation().getX());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Displacement Y",getPose().getTranslation().getY());
+
+
+
+
         m_odometry.update(
 
                 gyro.getRotation2d(), getLeftMeters(), getRightMeters());
@@ -227,7 +259,7 @@ public class Drivetrain extends SubsystemBase {
     public double getLeftMeters() {
         double encoderPos = drivetrainLeft1.getSelectedSensorPosition();
         double rotations = encoderPos / 2048; //2048 ticks per rotation
-        double outPutRotations = rotations * (40 / 52);// geared to 40:52
+        double outPutRotations = rotations * (40.0 / 52);// geared to 40:52
         double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
         return meters;
     }
@@ -235,15 +267,15 @@ public class Drivetrain extends SubsystemBase {
     public double getRightMeters() {
         double encoderPos = drivetrainRight1.getSelectedSensorPosition();
         double rotations = encoderPos / 2048; //2048 ticks per rotation
-        double outPutRotations = rotations * (40 / 52);// geared to 40:52
+        double outPutRotations = rotations * (40.0 / 52);// geared to 40:52
         double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
-        return meters;
+        return -meters;
     }
 
     public double getLeftVelocity() {
         double encoderVel = drivetrainLeft1.getSelectedSensorVelocity();
         double rotations = encoderVel / 2048; //2048 ticks per rotation
-        double outPutRotations = rotations * (40 / 52);// geared to 40:52
+        double outPutRotations = rotations * (40.0 / 52);// geared to 40:52
         double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
         return meters;
     }
@@ -251,9 +283,9 @@ public class Drivetrain extends SubsystemBase {
     public double getRightVelocity() {
         double encoderVel = drivetrainRight1.getSelectedSensorVelocity();
         double rotations = encoderVel / 2048; //2048 ticks per rotation
-        double outPutRotations = rotations * (40 / 52);// geared to 40:52
+        double outPutRotations = rotations * (40.0 / 52);// geared to 40:52
         double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
-        return meters;
+        return -meters;
     }
 
     public void resetEncoders() {

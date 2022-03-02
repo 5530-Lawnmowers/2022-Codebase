@@ -32,6 +32,8 @@ import java.util.List;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+
     public static XboxController XBController1 = new XboxController(0);
     public static XboxController XBController2 = new XboxController(1);
     // The robot's subsystems and commands are defined here...
@@ -124,7 +126,8 @@ public class RobotContainer {
       drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
 
       // Run path following command, then stop at the end.
-      return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts((double) 0, (double) 0));
+      return null;
+//      return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts((double) 0, (double) 0));
   }
     // An ExampleCommand will run in autonomous
     // }

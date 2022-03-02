@@ -18,7 +18,6 @@ public class Climb extends SubsystemBase {
    * Creates a new Climb.
    */
   public Climb() {
-    ClimbL.follow(ClimbR);
     ClimbL.setIdleMode(CANSparkMax.IdleMode.kBrake);
     ClimbR.setIdleMode(CANSparkMax.IdleMode.kBrake);
     setDefaultCommand(new OperatorClimb(this));
@@ -31,7 +30,8 @@ public class Climb extends SubsystemBase {
   }
 
   public void setRawPower(double Power) {
-    ClimbR.set(Power);
+    ClimbR.set(-Power);
+    ClimbL.set(Power);
 
   }
 }

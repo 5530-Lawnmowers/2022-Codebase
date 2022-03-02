@@ -10,12 +10,12 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  */
 public class LimelightHelper {
 
-
     public static double getTurretRawY() {
         NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-turret"); // Gets the table of limelight values
         NetworkTableEntry ty = table.getEntry("ty"); // Gets the Veritcal Offset From Crosshair To Target, -24.85 to 24.85
         double y = ty.getDouble(0.0);
         return y;
+
     }
 
     public static double getTurretRawX() {

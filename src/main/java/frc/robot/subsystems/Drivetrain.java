@@ -12,8 +12,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -26,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.CurvatureDriveNew;
+import frc.robot.helpers.LimelightHelper;
 import frc.robot.helpers.ShuffleboardHelpers;
 
 //import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
@@ -70,6 +73,9 @@ public class Drivetrain extends SubsystemBase {
         drivetrainRight1.configFactoryDefault();
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        config.velocityMeasurementWindow =32;
+        config.velocityMeasurementPeriod = SensorVelocityMeasPeriod.Period_50Ms;
+
         drivetrainLeft1.configAllSettings(config);
         drivetrainLeft2.configAllSettings(config);
         drivetrainRight1.configAllSettings(config);
@@ -273,19 +279,20 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public double getLeftVelocity() {
+        //TODO check if it is 100ms or 10ms or 1s
         double encoderVel = drivetrainLeft1.getSelectedSensorVelocity();
-        double rotations = encoderVel / 2048; //2048 ticks per rotation
-        double outPutRotations = rotations * (40.0 / 52);// geared to 40:52
-        double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
-        return meters;
+       // double rotations = encoderVel / 2048; //2048 ticks per rotation
+      //  double outPutRotations = rotations * (40.0 / 52);// geared to 40:52
+        //double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
+        return encoderVel;
     }
 
     public double getRightVelocity() {
         double encoderVel = drivetrainRight1.getSelectedSensorVelocity();
-        double rotations = encoderVel / 2048; //2048 ticks per rotation
-        double outPutRotations = rotations * (40.0 / 52);// geared to 40:52
-        double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
-        return -meters;
+       // double rotations = encoderVel / 2048; //2048 ticks per rotation
+       // double outPutRotations = rotations * (40.0 / 52);// geared to 40:52
+       // double meters = outPutRotations * Units.inchesToMeters(4) * Math.PI; //Circumfraance * pi * diameter // Distance equals rotations times circumfrance
+        return -encoderVel;
     }
 
     public void resetEncoders() {

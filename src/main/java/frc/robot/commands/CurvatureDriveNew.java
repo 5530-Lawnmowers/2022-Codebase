@@ -64,8 +64,8 @@ public class CurvatureDriveNew extends CommandBase {
       decelerator = ramp(decelerator, "left");
     }
 
-    // Define necessary inputs
-    double throttle = accelerator - decelerator;
+    // Define necessary inputs SWITCH TO DRIVE BACK
+    double throttle = decelerator - accelerator;
     double curve = deadband(RobotContainer.XBController1.getLeftX(), kDeadbandJoystick);
     double quickTurn = deadband(RobotContainer.XBController1.getRightX(), kDeadbandJoystick) * turnWeight;
 

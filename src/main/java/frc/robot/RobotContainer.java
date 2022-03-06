@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.OperatorIntake;
+import frc.robot.commands.driveForward;
 import frc.robot.subsystems.*;
 
 import java.util.List;
@@ -63,7 +64,7 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        xb1a.whenHeld(new OperatorIntake(intake));
+        xb1a.toggleWhenPressed(new OperatorIntake(intake));
   }
 
   /**
@@ -126,7 +127,7 @@ public class RobotContainer {
       drivetrain.resetOdometry(exampleTrajectory.getInitialPose());
 
       // Run path following command, then stop at the end.
-      return null;
+      return new driveForward(drivetrain, intake);
 //      return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts((double) 0, (double) 0));
   }
     // An ExampleCommand will run in autonomous

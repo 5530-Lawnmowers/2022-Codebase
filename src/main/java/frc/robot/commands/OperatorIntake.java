@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.helpers.RumbleHelp;
 import frc.robot.subsystems.Intake;
 
 public class OperatorIntake extends CommandBase {
@@ -23,6 +24,7 @@ public class OperatorIntake extends CommandBase {
     @Override
     public void initialize() {
         intake.setRawPower(-.70);
+        RumbleHelp.RumbleClimb();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -35,6 +37,7 @@ public class OperatorIntake extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         intake.setRawPower(0);
+        RumbleHelp.RumbleStop();
     }
 
     // Returns true when the command should end.

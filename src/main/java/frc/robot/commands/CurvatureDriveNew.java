@@ -14,6 +14,7 @@ import frc.robot.subsystems.Drivetrain;
 
 public class CurvatureDriveNew extends CommandBase {
   private final double quickstopAlpha = 0.1;
+  boolean switched = true;
   private final double quickstopThreshold = 0.2;
   private final double turnWeight = 0.75;
   private final double driveWeight = 0.85;
@@ -65,7 +66,22 @@ public class CurvatureDriveNew extends CommandBase {
     }
 
     // Define necessary inputs SWITCH TO DRIVE BACK
-    double throttle = decelerator - accelerator;
+    double throttle = 0;
+    if (RobotContainer.XBController1.getBButtonReleased()) {
+      if (switched) {
+        switched = false;
+
+      } else {
+        switched = true;
+      }
+    }
+    if (switched) {
+      throttle = decelerator - accelerator;
+
+    } else {
+      throttle = accelerator - decelerator;
+
+    }
     double curve = deadband(RobotContainer.XBController1.getLeftX(), kDeadbandJoystick);
     double quickTurn = deadband(RobotContainer.XBController1.getRightX(), kDeadbandJoystick) * turnWeight;
 

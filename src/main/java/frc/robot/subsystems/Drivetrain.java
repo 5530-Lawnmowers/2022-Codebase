@@ -12,7 +12,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
@@ -28,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.commands.CurvatureDriveNew;
-import frc.robot.helpers.LimelightHelper;
 import frc.robot.helpers.ShuffleboardHelpers;
 
 //import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
@@ -87,46 +85,47 @@ public class Drivetrain extends SubsystemBase {
 
 
         drivetrainLeft1.setInverted(false);
+
         drivetrainLeft2.setInverted(false);
         drivetrainRight1.setInverted(false);
+
         drivetrainRight2.setInverted(false);
 
         drivetrainLeft1.setNeutralMode(NeutralMode.Coast);
         drivetrainLeft2.setNeutralMode(NeutralMode.Coast);
         drivetrainRight1.setNeutralMode(NeutralMode.Coast);
         drivetrainRight2.setNeutralMode(NeutralMode.Coast);
-        drivetrainLeft1.selectProfileSlot(0,0);
-        drivetrainRight1.selectProfileSlot(0,0);
+        drivetrainLeft1.selectProfileSlot(0, 0);
+        drivetrainRight1.selectProfileSlot(0, 0);
 
 //        drivetrainLeft1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
 //        drivetrainRight1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
         drivetrainLeft1.setSelectedSensorPosition(0);
         drivetrainRight1.setSelectedSensorPosition(0);
 
-        drivetrainRight1.config_kF(0, .05, 10);
-        drivetrainRight1.config_kP(0, .01, 10);
-        drivetrainRight1.config_kI(0, .007, 10);
-        drivetrainRight1.config_kD(0, .007, 10);
+        drivetrainRight1.config_kF(0, .0, 10);
+        drivetrainRight1.config_kP(0, .05, 10);
+        drivetrainRight1.config_kI(0, 0, 10);
+        drivetrainRight1.config_kD(0, 0, 10);
 
-        drivetrainLeft1.config_kF(0, .05, 10);
-        drivetrainLeft1.config_kP(0, .01, 10);
-        drivetrainLeft1.config_kI(0, .007, 10);
-        drivetrainLeft1.config_kD(0, .007, 10);
+        drivetrainLeft1.config_kF(0, .0, 10);
+        drivetrainLeft1.config_kP(0, .05, 10);
+        drivetrainLeft1.config_kI(0, 0, 10);
+        drivetrainLeft1.config_kD(0, 0, 10);
 
-        drivetrainRight2.config_kF(0, .05, 10);
-        drivetrainRight2.config_kP(0, .01, 10);
-        drivetrainRight2.config_kI(0, .007, 10);
-        drivetrainRight2.config_kD(0, .007, 10);
+        drivetrainRight2.config_kF(0, .0, 10);
+        drivetrainRight2.config_kP(0, .05, 10);
+        drivetrainRight2.config_kI(0, 0, 10);
+        drivetrainRight2.config_kD(0, 0, 10);
 
-        drivetrainLeft2.config_kF(0, .05, 10);
-        drivetrainLeft2.config_kP(0, .01, 10);
-        drivetrainLeft2.config_kI(0, .007, 10);
-        drivetrainLeft2.config_kD(0, .007, 10);
+        drivetrainLeft2.config_kF(0, .0, 10);
+        drivetrainLeft2.config_kP(0, .05, 10);
+        drivetrainLeft2.config_kI(0, 0, 10);
+        drivetrainLeft2.config_kD(0, 0, 10);
 
         drivetrainLeft = new SpeedControllerGroup(drivetrainLeft1, drivetrainLeft2);
         drivetrainRight = new SpeedControllerGroup(drivetrainRight1, drivetrainRight2);
         diffDrive = new DifferentialDrive(drivetrainLeft, drivetrainRight);
-
         // gyro.zeroYaw();
         //setDefaultCommand(new ThrottleMotorTest(this)); //Use this for motor tests
         m_odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
@@ -137,15 +136,13 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
 //        System.out.println(drivetrainLeft1.getSelectedSensorPosition());
-        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Left Position",getLeftMeters());
-        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Right Position",getRightMeters());
-        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Left Velocity",getLeftVelocity());
-        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Right Velocity",getRightVelocity());
-        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Heading",getPose().getRotation().getDegrees());
-        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Displacement X",getPose().getTranslation().getX());
-        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Displacement Y",getPose().getTranslation().getY());
-
-
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Left Position", drivetrainLeft1.getSelectedSensorPosition());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Right Position", drivetrainRight1.getSelectedSensorPosition());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Left Velocity", getLeftVelocity());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Right Velocity", getRightVelocity());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Heading", getPose().getRotation().getDegrees());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Displacement X", getPose().getTranslation().getX());
+        ShuffleboardHelpers.setWidgetValue("Drivetrain", "Displacement Y", getPose().getTranslation().getY());
 
 
         m_odometry.update(
@@ -238,6 +235,13 @@ public class Drivetrain extends SubsystemBase {
         meters = meters * TickPerRev;
         meters = meters / 10;
         return meters;
+    }
+
+    public void setPosition(double leftPos, double rightPos) {
+        drivetrainLeft1.set(ControlMode.Position, leftPos);
+        drivetrainLeft2.follow(drivetrainLeft1);
+        drivetrainRight1.set(ControlMode.Position, rightPos);
+        drivetrainRight2.follow(drivetrainRight1);
     }
 
 

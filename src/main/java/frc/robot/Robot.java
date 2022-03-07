@@ -37,6 +37,14 @@ public class Robot extends TimedRobot {
     ShuffleboardHelpers.createSimpleWidget("Drivetrain", "Displacement X",0);
     ShuffleboardHelpers.createSimpleWidget("Drivetrain", "Displacement Y",0);
 
+    ShuffleboardHelpers.createSimpleWidget("Climb", "P",0);
+    ShuffleboardHelpers.createSimpleWidget("Climb", "I",0);
+    ShuffleboardHelpers.createSimpleWidget("Climb", "D",0);
+    ShuffleboardHelpers.createSimpleWidget("Climb", "F",0);
+    ShuffleboardHelpers.createSimpleWidget("Climb", "Set Position",0);
+    ShuffleboardHelpers.createSimpleWidget("Climb", "Current Position",0);
+
+
 
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our

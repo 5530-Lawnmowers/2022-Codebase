@@ -4,53 +4,41 @@
 
 package frc.robot.commands;
 
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.helpers.ShuffleboardHelpers;
-import frc.robot.subsystems.Climb;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.Hood;
 
-public class climbInitalLatch extends CommandBase {
-  private final Climb climb;
-  private double positionToRun;
-
-  /** Creates a new climbInitalLatch. */
-  public climbInitalLatch(Climb climb) {
-    addRequirements(climb);
-    this.climb = climb;
+public class controlHood extends CommandBase {
+  private Hood hood;
+  /** Creates a new controlHood. */
+  public controlHood(Hood hood) {
+    addRequirements(hood);
+    this.hood = hood;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
-  @Override
+  //@Override
   public void initialize() {
-     positionToRun = climb.getPosition(70, true);
-    ShuffleboardHelpers.setWidgetValue("Climb", "Set Position", positionToRun);
-    
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climb.runToPosition(positionToRun);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climb.setRawPower(0);
-
+    hood.setHood(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    if(Math.abs(climb.getEncoderPosition()-positionToRun) < Constants.goodEnough) {
-      return true;
-    }
-    else{
-      return false;
-    }
+    return false;
   }
 }

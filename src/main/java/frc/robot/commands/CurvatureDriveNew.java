@@ -82,6 +82,7 @@ public class CurvatureDriveNew extends CommandBase {
       throttle = accelerator - decelerator;
 
     }
+    //TODO add invent when throttle backwords code
     double curve = deadband(RobotContainer.XBController1.getLeftX(), kDeadbandJoystick);
     double quickTurn = deadband(RobotContainer.XBController1.getRightX(), kDeadbandJoystick) * turnWeight;
 
@@ -133,9 +134,8 @@ public class CurvatureDriveNew extends CommandBase {
     }
 
     // Feed to motors
-    System.out.println(leftPower);
-    drivetrain.setDrivetrainMotor(driveWeight * leftPower, Constants.DT_L1);
-    drivetrain.setDrivetrainMotor(driveWeight * leftPower, Constants.DT_L2);
+    drivetrain.setDrivetrainMotor(driveWeight * leftPower*1.05, Constants.DT_L1);
+    drivetrain.setDrivetrainMotor(driveWeight * leftPower*1.05, Constants.DT_L2);
     drivetrain.setDrivetrainMotor(-driveWeight * rightPower, Constants.DT_R1);
     drivetrain.setDrivetrainMotor(-driveWeight * rightPower, Constants.DT_R2);
   }

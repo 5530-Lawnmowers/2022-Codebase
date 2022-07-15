@@ -5,39 +5,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.Climb;
+import frc.robot.helpers.LimelightHelper;
+import frc.robot.subsystems.Turret;
 
-public class OperatorClimb extends CommandBase {
-  /**
-   * Creates a new OperatorClimb.
-   */
-  private Climb climb;
+public class alignTurret extends CommandBase {
+  private final Turret turret;
 
-  public OperatorClimb(Climb climb) {
-    addRequirements(climb);
-    this.climb = climb;
-
+  /** Creates a new alignTurret. */
+  public alignTurret(Turret turret) {
+    addRequirements(turret);
+    this.turret = turret;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climb.setRawPower( (RobotContainer.XBController2.getRightTriggerAxis() - RobotContainer.XBController2.getLeftTriggerAxis()) *.8 );
+
+
+
+    double k = .015;
+    turret.setPower(LimelightHelper.getIntakeRawX() * k);
+
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    climb.setRawPower(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

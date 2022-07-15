@@ -31,17 +31,21 @@ private boolean weGoodToStop = false;
 
     positionToGoTo = climb.getPosition(angle,clockwise);
     ShuffleboardHelpers.setWidgetValue("Climb", "Set Position", positionToGoTo);
+    ShuffleboardHelpers.setWidgetValue("Climb","ran",false);
+    ShuffleboardHelpers.setWidgetValue("Climb","We Good To Stop",false);
+    ShuffleboardHelpers.setWidgetValue("Climb","We Going Forward",false);
 
     double difference = climb.getEncoderPosition() - positionToGoTo;
     if(difference < 0){
-      weGoingForward = false;
+      weGoingForward = true;
     }
     else if (difference == 0){
       weGoodToStop = true;
     }
     else{
-      weGoingForward = true;
+      weGoingForward = false;
     }
+    weGoodToStop=false;
 
 
   }
@@ -50,22 +54,28 @@ private boolean weGoodToStop = false;
   @Override
   public void execute() {
 
-    if(weGoingForward && (climb.getEncoderPosition() - positionToGoTo) > 0 ){
+    if(weGoingForward && (climb.getEncoderPosition() > positionToGoTo) ){
       climb.setRawPower(0);
       weGoodToStop = true;
+      ShuffleboardHelpers.setWidgetValue("Climb","ran",true);
     }
     else if(weGoingForward){
       climb.setRawPower(.5);
+
     }
-    else if (!weGoingForward && (climb.getEncoderPosition() - positionToGoTo) < 0){
+    else if (!weGoingForward && (climb.getEncoderPosition() < positionToGoTo)){
       climb.setRawPower(0);
       weGoodToStop = true;
+      ShuffleboardHelpers.setWidgetValue("Climb","ran",true);
+
 
     }
     else if(!weGoingForward){
       climb.setRawPower(-.5);
     }
+    ShuffleboardHelpers.setWidgetValue("Climb","We Good To Stop",weGoodToStop);
 
+    ShuffleboardHelpers.setWidgetValue("Climb","We Going Forward",weGoingForward);
 
 
 
@@ -74,7 +84,10 @@ private boolean weGoodToStop = false;
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    climb.setRawPower(0);
+
+  }
 
   // Returns true when the command should end.
   @Override

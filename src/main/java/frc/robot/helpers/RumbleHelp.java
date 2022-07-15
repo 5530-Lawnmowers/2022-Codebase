@@ -18,8 +18,8 @@ public class RumbleHelp {
 
 
     public static void RumbleStart(){
-            RobotContainer.XBController2.setRumble(RumbleType.kLeftRumble, .25);
-            RobotContainer.XBController2.setRumble(RumbleType.kRightRumble, .25);
+            RobotContainer.XBController1.setRumble(RumbleType.kLeftRumble, .25);
+            RobotContainer.XBController1.setRumble(RumbleType.kRightRumble, .25);
     }
     public static void RumbleStop(){
             RobotContainer.XBController1.setRumble(RumbleType.kLeftRumble, 0);

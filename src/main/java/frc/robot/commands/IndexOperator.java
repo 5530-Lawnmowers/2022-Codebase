@@ -5,52 +5,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.helpers.ShuffleboardHelpers;
-import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Index;
 
-public class climbInitalLatch extends CommandBase {
-  private final Climb climb;
-  private double positionToRun;
+public class IndexOperator extends CommandBase {
+  private final Index index;
 
-  /** Creates a new climbInitalLatch. */
-  public climbInitalLatch(Climb climb) {
-    addRequirements(climb);
-    this.climb = climb;
+  /** Creates a new IntakeOperator. */
+  public IndexOperator(Index index) {
+    addRequirements(index);
+    this.index = index;
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-     positionToRun = climb.getPosition(70, true);
-    ShuffleboardHelpers.setWidgetValue("Climb", "Set Position", positionToRun);
-    
+    index.TurnForward();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    climb.runToPosition(positionToRun);
-
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climb.setRawPower(0);
-
+    index.Stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    if(Math.abs(climb.getEncoderPosition()-positionToRun) < Constants.goodEnough) {
-      return true;
-    }
-    else{
-      return false;
-    }
+    return false;
   }
 }

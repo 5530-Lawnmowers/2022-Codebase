@@ -27,9 +27,12 @@ public class ShooterTesting extends CommandBase {
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
+
+            //careful laptop
     public void execute() {
-        shooter.setRawTop((Double) ShuffleboardHelpers.getWidgetValue("Shooter", "TopPower"));
-        shooter.setRawBot((Double) ShuffleboardHelpers.getWidgetValue("Shooter", "BotPower"));
+        shooter.setVoltage((Double) ShuffleboardHelpers.getWidgetValue("Shooter", "TopPower"),(Double) ShuffleboardHelpers.getWidgetValue("Shooter", "BotPower"));
+
+//        shooter.setVelocityBot((Double) ShuffleboardHelpers.getWidgetValue("Shooter", "BotPower"));
     }
 
     // Called once the command ends or is interrupted.

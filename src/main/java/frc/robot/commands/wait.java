@@ -4,53 +4,46 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.helpers.ShuffleboardHelpers;
-import frc.robot.subsystems.Climb;
 
-public class climbInitalLatch extends CommandBase {
-  private final Climb climb;
-  private double positionToRun;
+public class wait extends CommandBase {
+  private final double time;
+  private Timer timer = new Timer();
 
-  /** Creates a new climbInitalLatch. */
-  public climbInitalLatch(Climb climb) {
-    addRequirements(climb);
-    this.climb = climb;
+  /** Creates a new wait. */
+  public wait(double time) {
+    this.time = time;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-     positionToRun = climb.getPosition(70, true);
-    ShuffleboardHelpers.setWidgetValue("Climb", "Set Position", positionToRun);
-    
+    timer.start();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climb.runToPosition(positionToRun);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climb.setRawPower(0);
-
+    timer.reset();
+    timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    if(Math.abs(climb.getEncoderPosition()-positionToRun) < Constants.goodEnough) {
+    if(timer.advanceIfElapsed(time))
+    {
       return true;
     }
-    else{
-      return false;
-    }
+    return false;
   }
 }

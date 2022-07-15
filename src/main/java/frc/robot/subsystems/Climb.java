@@ -21,24 +21,25 @@ public class Climb extends SubsystemBase {
    * Creates a new Climb.
    */
   private double F= 0;
-  private double P= 0;
+  private double P= 0.1;
   private double I= 0;
   private double D= 0;
-  private double ticksPerRev = 2048; //Find this out
+  private double ticksPerRev = 180; //Find this out
   private RelativeEncoder encoder;
   public Climb() {
+
     encoder = ClimbL.getEncoder();
-    encoder.setPosition(0);
+    encoder.setPosition(180*20 + 45);
     controllerL = ClimbL.getPIDController();
     controllerL.setFF(F, 0);
     controllerL.setP(P, 0);
     controllerL.setI(I, 0);
     controllerL.setD(D, 0);
-    ShuffleboardHelpers.setWidgetValue("Climb","F",F);
-    ShuffleboardHelpers.setWidgetValue("Climb","P",P);
-    ShuffleboardHelpers.setWidgetValue("Climb","I",I);
-    ShuffleboardHelpers.setWidgetValue("Climb","D",D);
-    controllerL.setOutputRange(-.5, .5);
+//    ShuffleboardHelpers.setWidgetValue("Climb","F",F);
+//    ShuffleboardHelpers.setWidgetValue("Climb","P",P);
+//    ShuffleboardHelpers.setWidgetValue("Climb","I",I);
+//    ShuffleboardHelpers.setWidgetValue("Climb","D",D);
+    controllerL.setOutputRange(-1, 1);
     ClimbL.setIdleMode(CANSparkMax.IdleMode.kBrake);
     ClimbR.setIdleMode(CANSparkMax.IdleMode.kBrake);
     setDefaultCommand(new OperatorClimb(this));
@@ -49,34 +50,37 @@ public class Climb extends SubsystemBase {
   public void periodic() {
 
     //Delete this once we get it tuned
-    F = (double) ShuffleboardHelpers.getWidgetValue("Climb", "F");
-    P = (double) ShuffleboardHelpers.getWidgetValue("Climb", "P");
-    I = (double) ShuffleboardHelpers.getWidgetValue("Climb", "I");
-    D = (double) ShuffleboardHelpers.getWidgetValue("Climb", "D");
-    controllerL.setFF(F, 0);
-    controllerL.setP(P, 0);
-    controllerL.setI(I, 0);
-    controllerL.setD(D, 0);
+//    F = (double) ShuffleboardHelpers.getWidgetValue("Climb", "F");
+//    P = (double) ShuffleboardHelpers.getWidgetValue("Climb", "P");
+//    I = (double) ShuffleboardHelpers.getWidgetValue("Climb", "I");
+//    D = (double) ShuffleboardHelpers.getWidgetValue("Climb", "D");
+//    controllerL.setFF(F, 0);
+//    controllerL.setP(P, 0);
+//    controllerL.setI(I, 0);
+//    controllerL.setD(D, 0);
+//    controllerL.setIZone(0,0);
+
+    controllerL.setFeedbackDevice(encoder);
     // This method will be called once per scheduler run
-    ShuffleboardHelpers.setWidgetValue("Climb", "Current Position", getEncoderPosition());
+//    ShuffleboardHelpers.setWidgetValue("Climb", "Current Position", getEncoderPosition());
+    ClimbR.follow(ClimbL,true);
 
 
   }
 
   public void setRawPower(double Power) {
-    ClimbR.set(-Power);
     ClimbL.set(Power);
 
   }
 
-  public void zeroPosition(){
-    encoder.setPosition(0);
-  }
+//  public void zeroPosition(){
+//    encoder.setPosition(0);
+//  }
 
   public double getPosition(double angle, boolean clockwise){
     double realABS = getEncoderPosition();
     double realRel =Math.abs( (realABS % ticksPerRev) / ticksPerRev);
-    double modifier = (int)realABS / (int)ticksPerRev;
+    int modifier = (int)realABS / (int)ticksPerRev;
     if(modifier <= -1){
       realRel = 1-realRel;
     }
@@ -101,8 +105,16 @@ public class Climb extends SubsystemBase {
       setpoint = (realRel + difference + modifier) * ticksPerRev;
 
     }
+    if(setpoint ==0){
+      return 3645;
+    }
     return setpoint;
 
+  }
+  public double getAngle(){
+    double realABS = getEncoderPosition();
+    double realRel =Math.abs( (realABS % ticksPerRev) / ticksPerRev);
+return realRel;
   }
 
   //Make sure it gives good units for closed loop
@@ -113,7 +125,6 @@ public class Climb extends SubsystemBase {
 
   public void runToPosition(double position){
     controllerL.setReference(position, CANSparkMax.ControlType.kPosition);
-    ClimbR.set(-ClimbL.get());
   }
 
 

@@ -5,52 +5,49 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.helpers.ShuffleboardHelpers;
-import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-public class climbInitalLatch extends CommandBase {
-  private final Climb climb;
-  private double positionToRun;
+public class AutoShoot extends CommandBase {
+  private final Shooter shooter;
+  private final Index index;
 
-  /** Creates a new climbInitalLatch. */
-  public climbInitalLatch(Climb climb) {
-    addRequirements(climb);
-    this.climb = climb;
+  /** Creates a new AutoShoot. */
+  public AutoShoot(Shooter shooter, Index index) {
+    addRequirements(shooter,index);
+    this.shooter = shooter;
+    this.index = index;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-     positionToRun = climb.getPosition(70, true);
-    ShuffleboardHelpers.setWidgetValue("Climb", "Set Position", positionToRun);
-    
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climb.runToPosition(positionToRun);
+    shooter.setRawBot(-.4);
+    shooter.setRawTop(.4);
+    if(Math.abs(shooter.getvelocity() )> 1500 ) {
+      index.setPower(.75);
 
+
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climb.setRawPower(0);
-
+    index.setPower(0);
+    shooter.setRawTop(0);
+    shooter.setRawBot(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    if(Math.abs(climb.getEncoderPosition()-positionToRun) < Constants.goodEnough) {
-      return true;
-    }
-    else{
-      return false;
-    }
+    return false;
   }
 }

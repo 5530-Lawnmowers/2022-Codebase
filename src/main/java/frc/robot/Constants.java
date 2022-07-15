@@ -22,26 +22,42 @@ public final class Constants {
     public static final int DT_R1 = 7;
     public static final int DT_R2 = 8;
 
+
+    public static final int index =62;
+
+
     //Intake Motors
     public static final int Intake = 11;
+    //the big one
+
+
+
+    public  static final int Intake2 = 17;//Not Used
+    public  static final int turret = 52; //br drive
+
 
     //shooter motors
     public static final int ShootTop = 10;
     public static final int ShootBot = 9;
+    public static final int hood = 19;
 
     //climb motors
     public static final int ClimbL = 2;
     public static final int ClimbR = 3;
 
+    //Climb Constants
+
+    public static final double goodEnough =  2;
+
     //Drivetrain Constants
-    public static final double kS = .7023;
-    public static final double kV = 0.26789;
-    public static final double kA = 0.05077;
-    public static final double kP = 0.39476;
+    public static final double kS = 0.72666;
+    public static final double kV = 0.88984;
+    public static final double kA = 0.18986;
+    public static final double kP = 1.3132;
     public static final double kTrackwidthMeters = 0.5588;
     public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(kTrackwidthMeters);
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 3;//6;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;// 3;
     // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
